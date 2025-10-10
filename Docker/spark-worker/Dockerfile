@@ -43,7 +43,8 @@ RUN apt-get update && apt-get install -y wget curl bash procps && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copia o Spark já extraído para o container
-COPY spark-4.0.1-bin-hadoop3 /opt/spark
+COPY spark-4.0.1-bin-hadoop3/ /opt/spark
+RUN chmod -R 755 /opt/spark
 
 # Inicia o Spark Master
 CMD ["/opt/spark/sbin/start-worker.sh"]

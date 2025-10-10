@@ -33,7 +33,7 @@ FROM openjdk:17-slim
 USER root
 
 # Define variáveis
-ENV SPARK_VERSION=4.0.0
+ENV SPARK_VERSION=4.0.1
 ENV HADOOP_VERSION=3
 ENV SPARK_HOME=/opt/spark
 ENV PATH="$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH"
@@ -44,9 +44,9 @@ RUN apt-get update && apt-get install -y wget curl bash procps && \
 
 
 # Copia o Spark já extraído para o container
-COPY ./spark-4.0.1-bin-hadoop3/ /opt/spark
-
-RUN ls /opt/spark/jars | grep launcher
+COPY spark-4.0.1-bin-hadoop3/ /opt/spark
+COPY spark-defaults.conf /opt/spark/conf/spark-defaults.conf
+RUN chmod -R 755 /opt/spark
 
 # Inicia o Spark Master
 CMD ["/opt/spark/sbin/start-master.sh"]
