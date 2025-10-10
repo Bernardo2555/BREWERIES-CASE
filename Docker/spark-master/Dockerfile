@@ -28,7 +28,7 @@
 # RUN chown -R 1000:1000 ${SPARK_HOME}
 # USER 1000
 
-FROM openjdk:17-slim
+FROM eclipse-temurin:17-jdk
 
 USER root
 
@@ -37,15 +37,25 @@ ENV SPARK_VERSION=4.0.1
 ENV HADOOP_VERSION=3
 ENV SPARK_HOME=/opt/spark
 ENV PATH="$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH"
+ENV PYSPARK_PYTHON=python3
+ENV PYSPARK_DRIVER_PYTHON=python3
 
 # Instala dependências
-RUN apt-get update && apt-get install -y wget curl bash procps && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    wget \
+    curl \
+    bash \
+    procps \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /opt/spark/logs && chmod -R 777 /opt/spark/logs
 
 # Copia o Spark já extraído para o container
 COPY spark-4.0.1-bin-hadoop3/ /opt/spark
 COPY spark-defaults.conf /opt/spark/conf/spark-defaults.conf
+COPY log4j2.properties /opt/spark/conf/log4j2.properties
 RUN chmod -R 755 /opt/spark
 
 # Inicia o Spark Master
