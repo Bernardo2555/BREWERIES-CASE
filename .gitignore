@@ -8,3 +8,5 @@ Docker/spark-master/spark-4.0.1-bin-hadoop3/*
 Docker/spark-worker/spark-4.0.1-bin-hadoop3/*
 
 data/*
+
+jars/*
